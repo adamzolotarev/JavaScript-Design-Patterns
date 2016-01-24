@@ -4,19 +4,22 @@
 	<title>Cat Clicker</title>
 </head>
 <body>
-	<div id="cat-picture">
+	<div>
 		<span>Cat 1</span>
 		<br/>
-		<img src="cat0.jpg">
+		<img src="cat0.jpg" class="cat-picture" data-counter-id="cat0-click-counter">
+		<div>You clicked this cat 
+			<span id="cat0-click-counter" data-click-count="0">0</span> times
+		</div>
 
-		<br/>
 		<span>Cat 2</span>
 		<br/>
-		<img src="cat1.jpg">
-	</div>
-	<div>You clicked this cat 
-		<span id="click-counter">0</span> times
-	</div>
+		<img src="cat1.jpg" class="cat-picture" data-counter-id="cat1-click-counter">
+		<div>You clicked this cat 
+			<span id="cat1-click-counter" data-click-count="0">0</span> times
+		</div>
+
+	</div>	
 
 	<script type="text/javascript" src="app.js"></script>
 </body>

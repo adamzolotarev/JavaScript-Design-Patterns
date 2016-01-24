@@ -1,17 +1,25 @@
 var Cat = Cat || {};
 Cat.catClicker = function(){
-	var catClickCountState = 0;
-
+	
 	var updateCatClickCounter = function(){
-		var clickCounter = document.getElementById('click-counter');
-		catClickCountState++;
-		clickCounter.innerHTML = catClickCountState;
+		var clickerId = this.dataset.counterId,
+			clickCounter = document.getElementById(clickerId),
+			counterValue = clickCounter.dataset.clickCount;
+
+		counterValue++;
+		clickCounter.dataset.clickCount = counterValue;
+		clickCounter.innerHTML = counterValue;
 	},
 
-	onCatClickIncreaseClickCounter = function(){
-		var cat = document.getElementById('cat-picture');
-		cat.addEventListener('click', updateCatClickCounter);
+	onCatClickIncreaseClickCounter = function(){		
+		var cats = document.getElementsByClassName('cat-picture'),
+			numberOfCats = cats.length;
+
+		for(var i=0; i<numberOfCats; i++){
+			cats[i].addEventListener('click',updateCatClickCounter);
+		}		
 	},
+
 	
 	init = function(){
 		onCatClickIncreaseClickCounter();
