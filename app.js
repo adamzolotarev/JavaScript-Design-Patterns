@@ -6,7 +6,7 @@ Cat.catClicker = function(){
 		var clickCount = clicks[catNumber];
 		if(clickCount === undefined)
 		{
-			clicks[catNumber] = 0;
+			clicks[catNumber] = 1;
 		}
 		else{
 			clickCount++;
@@ -19,14 +19,22 @@ Cat.catClicker = function(){
 		return catPicture;
 	},
 
-	showMyCat = function(){
+	giveMeACatCauseIAskedForIt = function(){
 		var catNumber = this.dataset.catNumber,
 			catPictureDiv = document.getElementById('cat-picture'),
-			catImage = createCatPicture(catNumber);
+			catImage = createCatPicture(catNumber),
+			numberOfClicks = clicks[catNumber] === undefined ? 0 : clicks[catNumber],
+			clickCounter = document.getElementById('click-counter');
+			
 			catPictureDiv.innerHTML = '';
+			clickCounter.innerHTML  = 'You clicked me ' + numberOfClicks + ' times';
+
 			catImage.onclick = function(){
 				countCatClicks(catNumber);
+				clickCounter.innerHTML = 'You clicked me ' + clicks[catNumber] + ' times';
 			};
+			catPictureDiv.appendChild(document.createTextNode('My name is cat' + catNumber));
+			catPictureDiv.appendChild(document.createElement('br'));
 			catPictureDiv.appendChild(catImage);
 
 		return false;
@@ -37,7 +45,7 @@ Cat.catClicker = function(){
 			catLink = document.createElement('a');
 						
 			catLink.href='cat' +catNumber+'.jpg';			
-			catLink.onclick = showMyCat;
+			catLink.onclick = giveMeACatCauseIAskedForIt;
 			catLink.innerHTML = 'cat # ' + catNumber;
 			catLink.setAttribute('data-cat-number', catNumber);
 			newCatListItem.appendChild(catLink);
