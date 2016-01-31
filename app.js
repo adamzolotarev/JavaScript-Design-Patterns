@@ -1,71 +1,108 @@
 var Cat = Cat || {};
 Cat.catClicker = function(){
 	'use strict';
-	var clicks = [];
 
-	var countCatClicks = function(catNumber){		
-		clicks[catNumber] = (clicks[catNumber] || 0) +1;
-	},
-
-	createCatPicture = function(catNumber){
-	var catPicture = document.createElement("img");
-		catPicture.src = 'cat' + catNumber + '.jpg';
-		catPicture.setAttribute('data-cat-number', catNumber);
-		return catPicture;
-	},
-
-	updateClickCounter = function(){
-		var catNumber = this.dataset.catNumber,
-			clickCounter = document.getElementById('click-counter');
-
-		countCatClicks(catNumber);
-		clickCounter.innerHTML = 'You clicked me ' + clicks[catNumber] + ' times';			
-	},
-
-	showMeACat = function(){
-		var catNumber = this.dataset.catNumber,
-			catPictureDiv = document.getElementById('cat-picture'),
-			clickCounter = document.getElementById('click-counter'),
-			catImage = createCatPicture(catNumber),
-			numberOfClicks = clicks[catNumber] || 0;
-
-			clickCounter.innerHTML  = 'You clicked me ' + numberOfClicks + ' times';
-			catPictureDiv.innerHTML = '';
-			catImage.onclick = updateClickCounter;
-			catPictureDiv.appendChild(document.createTextNode('My name is cat' + catNumber));
-			catPictureDiv.appendChild(document.createElement('br'));
-			catPictureDiv.appendChild(catImage);
-
-		return false;
-	},
-
-	giveMeCatListItem = function(catNumber) {
-		var newCatListItem = document.createElement("li"),
-			catLink = document.createElement('a');
-						
-			catLink.href='cat' + catNumber + '.jpg';			
-			catLink.onclick = showMeACat;
-			catLink.innerHTML = 'cat # ' + catNumber;
-			catLink.setAttribute('data-cat-number', catNumber);
-			newCatListItem.appendChild(catLink);
-
-			return newCatListItem;
-	},
-	createCatList = function(numberOfCats){
-		var catList = document.getElementById('cat-list');
-
-		for(var catNumber = 0; catNumber < numberOfCats; catNumber++){
-			catList.appendChild(giveMeCatListItem(catNumber));
+	var model = {
+		init: function(numberOfCats){
+			this.catClicks = this.catClicks || [];			
+			this.numberOfCats = numberOfCats;
+		},
+		catWasClicked: function(){
+			this.catClicks[this.currentCatNumber] = (this.catClicks[this.currentCatNumber] || 0) + 1;
+		},
+		catWasSelected: function(catNumber){
+			this.currentCatNumber = catNumber;
+		},
+		getCurrentCatNumber: function(){
+			return this.currentCatNumber;
+		},
+		getCatClickCount: function(){
+			return this.catClicks[model.getCurrentCatNumber()] || 0;
+		},
+		getNumberOfCats: function(){
+			return this.numberOfCats;
 		}
-	},
-	
-	init = function(numberOfCats){
-		createCatList(numberOfCats);
 	};
 
-	return {
-		init:init
+	var octopus = {
+		catWasClicked: function(){
+			model.catWasClicked();
+			catDisplayView.render();
+		},
+		catWasSelected: function(catNumber){
+			model.catWasSelected(catNumber);
+			catDisplayView.render();
+		},
+		getCurrentCatNumber : function(){
+			return model.getCurrentCatNumber();
+		},
+		getClickCount: function(){
+			return model.getCatClickCount();
+		},
+		getNumberOfCats: function(){
+			return model.getNumberOfCats();
+		},
+		init: function(numberOfCats){
+			model.init(numberOfCats);
+			catListView.init();
+			catDisplayView.init();			
+		}
 	};
+
+	var catDisplayView = {
+		init: function(){
+			this.catArea = document.getElementById('cat-picture');
+			this.catClickCounter = document.getElementById('click-counter');			
+			this.catArea.addEventListener('click', function(e){
+				octopus.catWasClicked();
+				e.preventDefault;
+			});
+			catDisplayView.render();
+		},
+		render: function(){
+			var catNumber = octopus.getCurrentCatNumber(),
+				catPicture;
+
+			if(catNumber === undefined) return;
+
+			catPicture = document.createElement("img");
+			catPicture.src = 'cat' + octopus.getCurrentCatNumber() + '.jpg';
+			this.catArea.innerHTML = '';
+			this.catArea.appendChild(catPicture);
+
+			this.catClickCounter.innerHTML = 'You clicked me ' + octopus.getClickCount() + ' times';
+		}
+	};
+
+	var catListView = {
+		giveMeCatListItem: function(catNumber) {
+			var newCatListItem = document.createElement("li"),
+				catLink = document.createElement('a');
+							
+				// catLink.href='cat' + catNumber + '.jpg';
+				catLink.addEventListener('click', function(e){
+					e.preventDefault();
+					e.stopPropagation();
+					octopus.catWasSelected(catNumber);					
+				});
+
+				catLink.innerHTML = 'cat # ' + catNumber;				
+				newCatListItem.appendChild(catLink);
+
+				return newCatListItem;
+		},
+		init: function(){
+			this.catList = document.getElementById('cat-list');
+			catListView.render();
+		},
+		render: function(){
+			var numberOfCats = octopus.getNumberOfCats();
+
+			for(var catNumber = 0; catNumber < numberOfCats; catNumber++){
+				this.catList.appendChild(catListView.giveMeCatListItem(catNumber));
+			}
+		}
+	};
+
+	octopus.init(5);
 }();
-
-Cat.catClicker.init(5);
