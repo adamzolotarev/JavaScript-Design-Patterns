@@ -3,10 +3,33 @@
 <head>
 	<title>Cat Clicker</title>
 </head>
-<body>
+<body>	
 	<div>
 		<ul id="cat-list"></ul>
 	</div>
+
+	<div><button id='admin-button' style="display:none">Admin</button></div>
+	<div id='admin-area' style="display:none">
+		<div>
+			<label for="admin-cat-name">Name</label>
+			<input type='text' id='admin-cat-name'/>
+		</div>
+
+		<div>
+			<label for="admin-cat-clicks">Clicks</label>
+			<input type='text' id='admin-cat-clicks'/>
+		</div>
+		
+		<div>
+			<label for="admin-cat-url">Url</label>
+			<input type='text' id='admin-cat-url'/>
+		</div>
+		<div>
+			<button id='admin-save-button'>Save</button>
+			<button id='admin-cancel-button'>Cancel</button>
+		</div>
+	</div>
+	
 	<h2 id='cat-name'></h2>
 	<img id='cat-picture' src =''>
 	<div id='click-counter'></div>
