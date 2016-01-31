@@ -6,12 +6,14 @@ Cat.catClicker = function(){
 		init: function(numberOfCats){
 			this.catClicks = this.catClicks || [];			
 			this.numberOfCats = numberOfCats;
+			this.catName;
 		},
 		catWasClicked: function(){
 			this.catClicks[this.currentCatNumber] = (this.catClicks[this.currentCatNumber] || 0) + 1;
 		},
 		catWasSelected: function(catNumber){
 			this.currentCatNumber = catNumber;
+			this.catName = 'cat#' + catNumber;
 		},
 		getCurrentCatNumber: function(){
 			return this.currentCatNumber;
@@ -21,6 +23,9 @@ Cat.catClicker = function(){
 		},
 		getNumberOfCats: function(){
 			return this.numberOfCats;
+		},
+		getCatName: function(){
+			return this.catName;
 		}
 	};
 
@@ -42,6 +47,9 @@ Cat.catClicker = function(){
 		getNumberOfCats: function(){
 			return model.getNumberOfCats();
 		},
+		getCatName: function(){
+			return model.getCatName();
+		},		
 		init: function(numberOfCats){
 			model.init(numberOfCats);
 			catListView.init();
@@ -53,6 +61,7 @@ Cat.catClicker = function(){
 		init: function(){
 			this.catArea = document.getElementById('cat-picture');
 			this.catClickCounter = document.getElementById('click-counter');			
+			this.catNameArea = document.getElementById('cat-name');
 			this.catArea.addEventListener('click', function(e){
 				octopus.catWasClicked();
 				e.preventDefault;
@@ -68,6 +77,7 @@ Cat.catClicker = function(){
 			catPicture = document.createElement("img");
 			catPicture.src = 'cat' + octopus.getCurrentCatNumber() + '.jpg';
 			this.catArea.innerHTML = '';
+			this.catNameArea.innerHTML = 'My name is ' + octopus.getCatName();
 			this.catArea.appendChild(catPicture);
 
 			this.catClickCounter.innerHTML = 'You clicked me ' + octopus.getClickCount() + ' times';
