@@ -8,10 +8,10 @@ Cat.catClicker = function(){
 			this.numberOfCats = numberOfCats;
 			this.catName;
 		},
-		catWasClicked: function(){
+		incrementCatClicks: function(){
 			this.catClicks[this.currentCatNumber] = (this.catClicks[this.currentCatNumber] || 0) + 1;
 		},
-		catWasSelected: function(catNumber){
+		setCurrentCat: function(catNumber){
 			this.currentCatNumber = catNumber;
 			this.catName = 'cat#' + catNumber;
 		},
@@ -30,12 +30,12 @@ Cat.catClicker = function(){
 	};
 
 	var octopus = {
-		catWasClicked: function(){
-			model.catWasClicked();
+		incrementCatClicks: function(){
+			model.incrementCatClicks();
 			catDisplayView.render();
 		},
-		catWasSelected: function(catNumber){
-			model.catWasSelected(catNumber);
+		setCurrentCat: function(catNumber){
+			model.setCurrentCat(catNumber);
 			catDisplayView.render();
 		},
 		getCurrentCatNumber : function(){
@@ -59,27 +59,22 @@ Cat.catClicker = function(){
 
 	var catDisplayView = {
 		init: function(){
-			this.catArea = document.getElementById('cat-picture');
+			this.catImage = document.getElementById('cat-picture');
 			this.catClickCounter = document.getElementById('click-counter');			
 			this.catNameArea = document.getElementById('cat-name');
-			this.catArea.addEventListener('click', function(e){
-				octopus.catWasClicked();
+			this.catImage.addEventListener('click', function(e){
+				octopus.incrementCatClicks();
 				e.preventDefault;
 			});
 			catDisplayView.render();
 		},
 		render: function(){
-			var catNumber = octopus.getCurrentCatNumber(),
-				catPicture;
+			var catNumber = octopus.getCurrentCatNumber();
 
 			if(catNumber === undefined) return;
-
-			catPicture = document.createElement("img");
-			catPicture.src = 'cat' + octopus.getCurrentCatNumber() + '.jpg';
-			this.catArea.innerHTML = '';
-			this.catNameArea.innerHTML = 'My name is ' + octopus.getCatName();
-			this.catArea.appendChild(catPicture);
-
+			
+			this.catImage.src = 'cat' + octopus.getCurrentCatNumber() + '.jpg';			
+			this.catNameArea.innerHTML = 'My name is ' + octopus.getCatName();		
 			this.catClickCounter.innerHTML = 'You clicked me ' + octopus.getClickCount() + ' times';
 		}
 	};
@@ -89,11 +84,10 @@ Cat.catClicker = function(){
 			var newCatListItem = document.createElement("li"),
 				catLink = document.createElement('a');
 							
-				// catLink.href='cat' + catNumber + '.jpg';
 				catLink.addEventListener('click', function(e){
 					e.preventDefault();
 					e.stopPropagation();
-					octopus.catWasSelected(catNumber);					
+					octopus.setCurrentCat(catNumber);					
 				});
 
 				catLink.innerHTML = 'cat # ' + catNumber;				
