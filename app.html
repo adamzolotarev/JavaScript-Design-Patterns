@@ -1,40 +1,24 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-	<title>Cat Clicker</title>
+    <meta charset="UTF-8">
+    <title>Cat Clicker</title>
 </head>
-<body>	
-	<div>
-		<ul id="cat-list"></ul>
-	</div>
+<body>
+    <div data-bind="with: currentCat()">
 
-	<div><button id='admin-button' style="display:none">Admin</button></div>
-	<div id='admin-area' style="display:none">
-		<div>
-			<label for="admin-cat-name">Name</label>
-			<input type='text' id='admin-cat-name'/>
-		</div>
+        <h2 data-bind="text: name"></h2>
+        <div data-bind="text: catLevel"></div>
+        <div data-bind="text: clickCount"></div>
 
-		<div>
-			<label for="admin-cat-clicks">Clicks</label>
-			<input type='text' id='admin-cat-clicks'/>
-		</div>
-		
-		<div>
-			<label for="admin-cat-url">Url</label>
-			<input type='text' id='admin-cat-url'/>
-		</div>
-		<div>
-			<button id='admin-save-button'>Save</button>
-			<button id='admin-cancel-button'>Cancel</button>
-		</div>
-	</div>
-	
-	<h2 id='cat-name'></h2>
-	<img id='cat-picture' src =''>
-	<div id='click-counter'></div>
+        <img src="" alt="cute cat" data-bind="click: $parent.incrementCounter, attr: {src: imgSrc}">
 
-	<script type="text/javascript" src="app.js"></script>
+        <ul data-bind="foreach: nickNames">
+    		<li data-bind="text: name"></li>
+    	</ul>
+
+    </div>
+    <script src="lib/knockout-3.4.0.js"></script>
+    <script src="app.js"></script>
 </body>
 </html>
-
