@@ -7,27 +7,27 @@ CatNs.catClicker = function(){
 	var initialCats = [{
 		clickCount: 0,
 		name:'cat0',
-		imgSrc: 'cat0.jpg',
+		imgSrc: 'images/cat0.jpg',
 		nicknames:['Kitty', 'Catopus', 'Cat42','Awesomecat']},
 		{
 		clickCount: 0,
 		name:'cat1',
-		imgSrc: 'cat1.jpg',
+		imgSrc: 'images/cat1.jpg',
 		nicknames:['Kitty', 'Catopus', 'Cat42','Awesomecat']},
 		{
 		clickCount: 0,
 		name:'cat2',
-		imgSrc: 'cat2.jpg',
+		imgSrc: 'images/cat2.jpg',
 		nicknames:['Kitty', 'Catopus', 'Cat42','Awesomecat']},
 		{
 		clickCount: 0,
 		name:'cat3',
-		imgSrc: 'cat3.jpg',
+		imgSrc: 'images/cat3.jpg',
 		nicknames:['Kitty', 'Catopus', 'Cat42','Awesomecat']},
 		{
 		clickCount: 0,
 		name:'cat4',
-		imgSrc: 'cat4.jpg',
+		imgSrc: 'images/cat4.jpg',
 		nicknames:['Kitty', 'Catopus', 'Cat42','Awesomecat']}		
 	];
 
@@ -36,7 +36,7 @@ CatNs.catClicker = function(){
 		this.name = ko.observable(data.name);
 		this.imgSrc = ko.observable(data.imgSrc);
 		this.nickNames = ko.observableArray(data.nicknames);
-
+		this.isActive = ko.observable(false);
 		this.catLevel = ko.computed(function(){
 			if(this.clickCount() < 10){
 				return "level 0";
@@ -52,11 +52,12 @@ CatNs.catClicker = function(){
 	var ViewModel = function(){
 		var self = this;
 
-		this.catList = ko.observableArray([]);
+		this.catList = ko.observableArray([]);		
 
 		initialCats.forEach(function(catItem){
 			self.catList.push(new Cat(catItem));
 		});
+		self.catList()[0].isActive(true);
 
 		this.currentCat = ko.observable(this.catList()[0]);
 
@@ -64,9 +65,12 @@ CatNs.catClicker = function(){
 			self.currentCat().clickCount(self.currentCat().clickCount() + 1);
 		};
 
-		this.changeCat = function(cat){			
+		this.changeCat = function(cat){
+			self.currentCat().isActive(false);		
+			cat.isActive(true);
 			self.currentCat(cat);
 		};
+		
 	};
 
 	ko.applyBindings(new ViewModel());

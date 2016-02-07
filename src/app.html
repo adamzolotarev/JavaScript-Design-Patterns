@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cat Clicker</title>
+</head>
+<body>
+<div class="container">
+	<div class="row">
+		<ul data-bind="foreach: catList" class="list-group">
+			<a data-bind="text: name, click: $parent.changeCat, css:{active: isActive() === true}" class="list-group-item"></a>
+		</ul>
+
+	</div>
+
+    <div data-bind="with: currentCat()" class="row">
+
+        <h2 data-bind="text: name"></h2>
+        <h3 data-bind="text: catLevel"></h3>
+        <div data-bind="text: clickCount"></div>
+
+        <img src="" alt="cute cat" data-bind="click: $parent.incrementCounter, attr: {src: imgSrc}">
+
+        <ul data-bind="foreach: nickNames" class="inline">
+    		<li data-bind="text: $data"></li>
+    	</ul>
+
+    </div>
+   </div>
+    <script src="scripts/knockout-3.4.0.js"></script>
+    <script src="scripts/bundle.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/bundle.css">
+</body>
+</html>
